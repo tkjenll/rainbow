@@ -32,7 +32,6 @@ import isNativeStackAvailable from '@rainbow-me/helpers/isNativeStackAvailable';
 import networkTypes from '@rainbow-me/helpers/networkTypes';
 import { checkIsValidAddressOrDomain } from '@rainbow-me/helpers/validators';
 import {
-  useAccountAssets,
   useAccountSettings,
   useCoinListEditOptions,
   useColorForAsset,
@@ -45,6 +44,7 @@ import {
   useSendableUniqueTokens,
   useSendSavingsAccount,
   useSendSheetInputRefs,
+  useSortedAccountAssets,
   useTransactionConfirmation,
   useUpdateAssetOnchainBalance,
   useUserAccounts,
@@ -96,7 +96,7 @@ export default function SendSheet(props) {
   const { goBack, navigate } = useNavigation();
   const { dataAddNewTransaction } = useTransactionConfirmation();
   const updateAssetOnchainBalanceIfNeeded = useUpdateAssetOnchainBalance();
-  const { allAssets } = useAccountAssets();
+  const { sortedAssets } = useSortedAccountAssets();
   const {
     gasFeeParamsBySpeed,
     gasLimit,
@@ -821,7 +821,6 @@ export default function SendSheet(props) {
         )}
         {showAssetList && (
           <SendAssetList
-            allAssets={allAssets}
             fetchData={fetchData}
             hiddenCoins={hiddenCoins}
             nativeCurrency={nativeCurrency}
@@ -829,6 +828,7 @@ export default function SendSheet(props) {
             onSelectAsset={sendUpdateSelected}
             pinnedCoins={pinnedCoins}
             savings={savings}
+            sortedAssets={sortedAssets}
             uniqueTokens={sendableUniqueTokens}
           />
         )}

@@ -8,10 +8,10 @@ const uniswapAllTokensSelector = state => state.uniswap.allTokens;
 const networkSelector = state => state.settings.network;
 
 const withUniswapAssetsInWallet = (network, assetData, uniswapAllPairs) => {
-  const { allAssets } = assetData;
+  const { sortedAssets } = assetData;
   return network === NetworkTypes.mainnet
-    ? filter(allAssets, ({ address }) => uniswapAllPairs[address])
-    : allAssets;
+    ? filter(sortedAssets, ({ address }) => uniswapAllPairs[address])
+    : sortedAssets;
 };
 
 const withUniswapAssetsInWalletSelector = createSelector(

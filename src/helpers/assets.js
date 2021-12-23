@@ -2,7 +2,6 @@ import {
   chunk,
   compact,
   concat,
-  find,
   forEach,
   get,
   groupBy,
@@ -18,6 +17,7 @@ import {
   ETH_ICON_URL,
   supportedNativeCurrencies,
 } from '@rainbow-me/references';
+import { ethereumUtils } from '@rainbow-me/utils';
 
 const COINS_TO_SHOW = 5;
 
@@ -36,7 +36,7 @@ const addEthPlaceholder = (
   nativeCurrency,
   emptyCollectibles
 ) => {
-  const hasEth = !!find(assets, asset => asset.address === 'eth');
+  const hasEth = !!ethereumUtils.getAccountAsset();
 
   const { genericAssets } = store.getState().data;
   if (
@@ -57,7 +57,6 @@ const addEthPlaceholder = (
       icon_url: ETH_ICON_URL,
       isCoin: true,
       isPinned: pinnedCoins.includes('eth'),
-      isPlaceholder: true,
       isSmall: false,
       name: 'Ethereum',
       native: {
@@ -96,7 +95,7 @@ const getTotal = assets =>
   );
 
 export const buildCoinsList = (
-  assetsOriginal,
+  sortedAssets,
   nativeCurrency,
   isCoinListEdited,
   pinnedCoins,
@@ -110,7 +109,7 @@ export const buildCoinsList = (
     hiddenAssets = [];
 
   const { addedEth, assets } = addEthPlaceholder(
-    assetsOriginal,
+    sortedAssets,
     includePlaceholder,
     pinnedCoins,
     nativeCurrency,
@@ -193,7 +192,7 @@ export const buildCoinsList = (
 
 // TODO make it better
 export const buildBriefCoinsList = (
-  assetsOriginal,
+  sortedAssets,
   nativeCurrency,
   isCoinListEdited,
   pinnedCoins,
@@ -202,7 +201,7 @@ export const buildBriefCoinsList = (
   emptyCollectibles
 ) => {
   const { assets, smallBalancesValue, totalBalancesValue } = buildCoinsList(
-    assetsOriginal,
+    sortedAssets,
     nativeCurrency,
     isCoinListEdited,
     pinnedCoins,
