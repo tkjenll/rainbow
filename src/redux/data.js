@@ -45,7 +45,6 @@ import {
   getAssetPricesFromUniswap,
   getLocalTransactions,
   saveAccountAssetsData,
-  saveAccountEmptyState,
   saveAssetPricesFromUniswap,
   saveLocalTransactions,
 } from '@rainbow-me/handlers/localstorage/accountLocal';
@@ -372,8 +371,6 @@ export const dataUpdateAssets = assetsData => (dispatch, getState) => {
   const { accountAddress, network } = getState().settings;
   if (!isEmpty(assetsData)) {
     saveAccountAssetsData(assetsData, accountAddress, network);
-    // Change the state since the account isn't empty anymore
-    saveAccountEmptyState(false, accountAddress, network);
     dispatch({
       payload: assetsData,
       type: DATA_UPDATE_ACCOUNT_ASSETS_DATA,
@@ -581,10 +578,6 @@ export const addressAssetsReceived = (
   );
 
   saveAccountAssetsData(parsedAssets, accountAddress, network);
-  if (!isEmpty(parsedAssets)) {
-    // Change the state since the account isn't empty anymore
-    saveAccountEmptyState(false, accountAddress, network);
-  }
 
   dispatch({
     payload: parsedAssets,
